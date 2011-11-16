@@ -1,5 +1,4 @@
 Perktrees::Application.routes.draw do
-  resources :skills
   root :to => 'skills#index'
 
   # The priority is based upon order of creation:

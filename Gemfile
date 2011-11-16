@@ -10,6 +10,7 @@ end
 
 gem 'haml'
 gem 'jquery-rails'
+gem 'thin'
 
 group :production do
   gem 'pg'

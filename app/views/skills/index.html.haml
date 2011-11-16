@@ -1,0 +1,14 @@
+%table
+  %tr
+    %th Name
+    %th Points
+  - @skills.each do |skill|
+    %tr
+      %td= skill.name
+      %td
+        %ul
+          - skill.perks.each do |perk|
+            - if perk.ranks == 1
+              %li= perk.name
+            - else
+              %li= perk.name

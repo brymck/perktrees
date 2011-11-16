@@ -23,10 +23,9 @@ ActiveRecord::Schema.define(:version => 20111116031513) do
   create_table "perks", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "ranks",                                 :default => 1
+    t.integer  "ranks",        :default => 1
     t.integer  "skill_id"
-    t.integer  "skill_points",                          :default => 0
-    t.integer  "additional_skill_points_for_next_rank", :default => 20
+    t.integer  "skill_points", :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

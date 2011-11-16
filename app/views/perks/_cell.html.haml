@@ -1,5 +1,16 @@
-%td
-  - if perk.ranks == 1
-    %p Hi
-  - else
-    %p Bye
+- requires_points = (perk.skill_points != 0)
+- requires_perks  = !perk.prerequisite_ids.empty?
+%li{id: "perk#{perk.id}",
+:"data-points"     => (requires_points ? perk.skill_points : nil),
+:"data-points_met" => (requires_points ? false : nil),
+:"data-perks"      => (requires_perks ? perk.prerequisite_ids_text : nil),
+:"data-perks_met"  => (requires_perks ? false : nil),
+title: perk.description}
+  %label
+    - if perk.ranks == 1
+      %input{type: :checkbox, disabled: requires_points || requires_perks}
+    - else
+      %select
+        - perk.ranks.times do |t|
+          %option{disabled: requires_points || requires_perks}= t
+    = perk.name

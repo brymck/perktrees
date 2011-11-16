@@ -3,12 +3,11 @@
     %th Name
     %th Points
   - @skills.each do |skill|
-    %tr
+    %tr.skill
       %td= skill.name
       %td
-        %ul
+        %input{type: :number, min: 15, max: 100, value: 15}
+      %td
+        %ul.perks
           - skill.perks.each do |perk|
-            - if perk.ranks == 1
-              %li= perk.name
-            - else
-              %li= perk.name
+            = render partial: "perks/cell", locals: { perk: perk }

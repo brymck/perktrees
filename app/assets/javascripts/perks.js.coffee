@@ -1,7 +1,11 @@
 enable_perk = ($perk) ->
-  enabled = ($perk.data("points_met") isnt false and
-    $perk.data("perks_met") isnt false)
+  enabled = (($perk.data("points_met") is true) and
+    ($perk.data("perks_met") is true))
   $perk.find("input[type=checkbox], select").prop("disabled", !enabled)
+  if enabled
+    $perk.addClass "disabled"
+  else
+    $perk.removeClass "disabled"
 
 # Determines whether a perk is chosen based on whether the checkbox is checked
 # or the selection dropdown is greater than zero

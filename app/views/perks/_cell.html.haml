@@ -6,11 +6,11 @@
 :"data-perks"      => (requires_perks ? perk.prerequisite_ids_text : nil),
 :"data-perks_met"  => (requires_perks ? false : nil),
 title: perk.description}
-  %label
-    - if perk.ranks == 1
-      %input{type: :checkbox, disabled: requires_points || requires_perks}
-    - else
-      %select
-        - perk.ranks.times do |t|
-          %option{disabled: requires_points || requires_perks}= t
-    = perk.name
+  - if perk.ranks == 1
+    %input{type: :checkbox, disabled: requires_points || requires_perks, id: "option#{perk.id}"}
+  - else
+    %select{disabled: requires_points || requires_perks, id: "option#{perk.id}"}
+      - perk.ranks.times do |t|
+        %option= t
+  %label{for: "option#{perk.id}"}
+    = perk.short_name

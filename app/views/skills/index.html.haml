@@ -11,3 +11,5 @@
     - @skills.each do |skill|
       %tr.skill
         = render partial: "row", locals: { skill: skill }
+%label URL
+%input#url{type: :text, size: 200}

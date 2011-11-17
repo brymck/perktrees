@@ -2,7 +2,9 @@
 MAJOR_MOD = 10
 MINOR_MOD = 5
 $races = null
+$url = null
 skills = []
+hashes = {}
 
 # Gets the type of node or, if it's an input, the type of input node
 get_type = ($option) ->
@@ -132,6 +134,53 @@ adjust_skills = ->
   check_skills previous_skills
   check_skills skills
 
+# Pads a string with zeroes until it reaches the desired length
+left_pad = (str, length) ->
+  while str.length < length
+    str = "0#{str}"
+  str
+
+get_hashes = ->
+  hashes = {}
+  segments = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')
+  for segment in segments
+    parts = segment.split('=')
+    hashes[parts[0]] = parts[1]
+
+load_url = ->
+  if hashes.params
+    index = 0
+    $("select, input[id!=url]").each (i, option) ->
+      $option = $(option)
+      switch get_type($option)
+        when "checkbox"
+          $option.prop "checked", (hashes.params.substr(index, 1) is "1")
+          index++
+        when "number"
+          value = parseInt(hashes.params.substr(index, 2), 16)
+          $option.val value
+          index += 2
+        when "select"
+          value = parseInt(hashes.params.substr(index, 1), 16)
+          $option.val $option.find("option").eq(value).val()
+          index++
+
+build_urls = ->
+  text = window.location.href
+  text += (if text.indexOf("?") == -1 then "?" else "&") + "params="
+
+  $("select, input[id!=url]").each (i, option) ->
+    $option = $(option)
+    switch get_type($option)
+      when "checkbox"
+        text += (if $option.prop("checked") then 1 else 0)
+      when "number"
+        text += left_pad(parseInt($option.val()).toString(16), 2)
+      when "select"
+        text += $option[0].selectedIndex.toString(16)
+
+  $url.val text
+
 $ ->
   # Go through each skill row in the table
   $(".skill").each (i, skill) ->
@@ -142,5 +191,19 @@ $ ->
 
   # Set event for adjusting skill points
   $races = $("#races")
-  $races.change adjust_skills
-  $races.val("Nord").trigger("change")
+  if $races.size() > 0
+    $races.change adjust_skills
+    $races.val("Nord").trigger("change")
+
+  # Calculate hashes from URL
+  get_hashes()
+
+  $url = $("#url")
+  if $url.size() > 0
+    $("select, input[id!=url]").keyup(build_urls).mouseup(build_urls).change(build_urls)
+
+    # Highlight URL on click
+    $url.click -> $url.focus().select()
+
+    # Load information from current URL if it exists
+    load_url()

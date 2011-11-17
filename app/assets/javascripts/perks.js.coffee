@@ -1,6 +1,11 @@
 # Set variables locally accessible within this script
 MAJOR_MOD = 10
 MINOR_MOD = 5
+
+# For URL compression
+NUMBER_PLACES = 7
+SELECT_PLACES = 5
+
 $races = null
 $url = null
 skills = []
@@ -147,39 +152,63 @@ get_hashes = ->
     parts = segment.split('=')
     hashes[parts[0]] = parts[1]
 
+# Load character from URL params
 load_url = ->
   if hashes.params
-    index = 0
+    # Convert from base 36 to binary
+    text_36 = hashes.params
+    text = ""
+    i = 0
+    while i < text_36.length
+      converted = parseInt(text_36.substr(i, 3), 36).toString(2)
+      console.log "#{text_36.substr(i, 3)} -> #{converted}"
+      text += left_pad(converted, 15)
+      i += 3
+    index = 1
+
+    # Fill in selects and inputs
     $("select, input[id!=url]").each (i, option) ->
       $option = $(option)
       switch get_type($option)
         when "checkbox"
-          $option.prop "checked", (hashes.params.substr(index, 1) is "1")
+          $option.prop "checked", (text.substr(index, 1) is "1")
           index++
         when "number"
-          value = parseInt(hashes.params.substr(index, 2), 16)
+          value = parseInt(text.substr(index, NUMBER_PLACES), 2)
           $option.val value
-          index += 2
+          index += NUMBER_PLACES
         when "select"
-          value = parseInt(hashes.params.substr(index, 1), 16)
+          value = parseInt(text.substr(index, SELECT_PLACES), 2)
           $option.val $option.find("option").eq(value).val()
-          index++
+          index += SELECT_PLACES
 
+# Constantly build URLs as values change
 build_urls = ->
-  text = window.location.href
-  text += (if text.indexOf("?") == -1 then "?" else "&") + "params="
+  # Necessary to prevent initial zeroes from being lost
+  text = "1"
 
+  # Get binary values from selects and inputs
   $("select, input[id!=url]").each (i, option) ->
     $option = $(option)
     switch get_type($option)
       when "checkbox"
         text += (if $option.prop("checked") then 1 else 0)
       when "number"
-        text += left_pad(parseInt($option.val()).toString(16), 2)
+        text += left_pad(parseInt($option.val()).toString(2), NUMBER_PLACES)
       when "select"
-        text += $option[0].selectedIndex.toString(16)
+        text += left_pad($option[0].selectedIndex.toString(2), SELECT_PLACES)
 
-  $url.val text
+  # Convert from binary to base 36
+  text_36 = ""
+  i = 0
+  while i < text.length
+    converted = parseInt(text.substr(i, 15), 2).toString(36)
+    console.log "#{text.substr(i, 15)} -> #{converted}"
+    text_36 += left_pad(converted, 3)
+    i += 15
+
+  # Write to URL box
+  $url.val window.location.origin + "/?params=" + text_36
 
 $ ->
   # Go through each skill row in the table

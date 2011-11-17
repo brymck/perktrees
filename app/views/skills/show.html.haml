@@ -1,10 +1,30 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <b>Name:</b>
-  <%= @skill.name %>
-</p>
-
-
-<%= link_to 'Edit', edit_skill_path(@skill) %> |
-<%= link_to 'Back', skills_path %>
+%h1= @skill.name
+- unless @skill.races.empty?
+  %ul
+    - unless @skill.major_races.empty?
+      %li
+        %strong Major Races:
+        = render partial: "layouts/list_with_links", locals: { objects: @skill.major_races, method: :name }
+    - unless @skill.minor_races.empty?
+      %li
+        %strong Minor Races:
+        = render partial: "layouts/list_with_links", locals: { objects: @skill.minor_races, method: :name }
+%table
+  %thead
+    %tr
+      %th
+      %th.underline{colspan: 2} Requirements
+      %th
+    %tr
+      %th Perk
+      %th Skill Points
+      %th Perks
+      %th Description
+  %tbody
+    - @skill.perks.each do |perk|
+      %tr
+        %td= perk.name
+        %td= perk.skill_points
+        %td= perk.prerequisites.map { perk.name }.join " or "
+        %td= perk.description
+= link_to "Back", root_path

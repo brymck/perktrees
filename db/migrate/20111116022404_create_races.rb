@@ -2,11 +2,13 @@ class CreateRaces < ActiveRecord::Migration
   def change
     create_table :races do |t|
       t.string :name
+      t.string :slug
       t.references :major_skill
 
       t.timestamps
     end
     add_index :races, :major_skill_id
+    add_index :races, :slug
 
     create_table :minor_skills_races, id: false do |t|
       t.integer :skill_id

@@ -1,4 +1,6 @@
 Perktrees::Application.routes.draw do
+  resources :races, only: [:index, :show]
+  resources :skills, only: :show
   root :to => 'skills#index'
 
   # The priority is based upon order of creation:

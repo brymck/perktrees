@@ -13,7 +13,8 @@ class SkillsController < ApplicationController
   # GET /skills/1
   # GET /skills/1.json
   def show
-    @skill = Skill.find(params[:id])
+    @skill = Skill.find_by_slug(params[:id])
+    @title = @skill.name
 
     respond_to do |format|
       format.html # show.html.erb

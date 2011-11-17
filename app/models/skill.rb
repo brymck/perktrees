@@ -6,4 +6,8 @@ class Skill < ActiveRecord::Base
   def races
     major_races + minor_races
   end
+
+  def to_param
+    slug
+  end
 end

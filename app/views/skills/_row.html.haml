@@ -1,0 +1,7 @@
+%td= link_to skill.name, skill
+%td
+  %input{id: "points#{skill.id}", type: :number, min: 15, max: 100, value: 15}
+%td
+  %ul.perks
+    - skill.perks.each do |perk|
+      = render partial: "perks/cell", locals: { perk: perk }

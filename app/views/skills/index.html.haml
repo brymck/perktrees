@@ -1,13 +1,11 @@
+%h1 Perk Trees
 %table
-  %tr
-    %th Name
-    %th Points
-  - @skills.each do |skill|
-    %tr.skill
-      %td= skill.name
-      %td
-        %input{id: "points#{skill.id}", type: :number, min: 15, max: 100, value: 15}
-      %td
-        %ul.perks
-          - skill.perks.each do |perk|
-            = render partial: "perks/cell", locals: { perk: perk }
+  %thead
+    %tr
+      %th Name
+      %th Points
+      %th Perks
+  %tbody
+    - @skills.each do |skill|
+      %tr.skill
+        = render partial: "row", locals: { skill: skill }

@@ -5,4 +5,8 @@ class Race < ActiveRecord::Base
   def skills
     [major_skill] + minor_skills
   end
+
+  def to_param
+    slug
+  end
 end

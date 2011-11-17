@@ -41,17 +41,22 @@ ActiveRecord::Schema.define(:version => 20111116031513) do
 
   create_table "races", :force => true do |t|
     t.string   "name"
+    t.string   "slug"
     t.integer  "major_skill_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "races", ["major_skill_id"], :name => "index_races_on_major_skill_id"
+  add_index "races", ["slug"], :name => "index_races_on_slug"
 
   create_table "skills", :force => true do |t|
     t.string   "name"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "skills", ["slug"], :name => "index_skills_on_slug"
 
 end

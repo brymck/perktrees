@@ -1,77 +1,86 @@
 # Skills
-alteration  = Skill.create(name: "Alteration")
-conjuration = Skill.create(name: "Conjuration")
-destruction = Skill.create(name: "Destruction")
-enchanting  = Skill.create(name: "Enchanting")
-illusion    = Skill.create(name: "Illusion")
-restoration = Skill.create(name: "Restoration")
-archery     = Skill.create(name: "Archery")
-block       = Skill.create(name: "Block")
-heavy_armor = Skill.create(name: "Heavy Armor")
-one_handed  = Skill.create(name: "One-handed")
-smithing    = Skill.create(name: "Smithing")
-two_handed  = Skill.create(name: "Two-handed")
-alchemy     = Skill.create(name: "Alchemy")
-light_armor = Skill.create(name: "Light Armor")
-lockpicking = Skill.create(name: "Lockpicking")
-pickpocket  = Skill.create(name: "Pickpocket")
-sneak       = Skill.create(name: "Sneak")
-speech      = Skill.create(name: "Speech")
+alteration  = Skill.create(name: "Alteration",  slug: "alteration")
+conjuration = Skill.create(name: "Conjuration", slug: "conjuration")
+destruction = Skill.create(name: "Destruction", slug: "destruction")
+enchanting  = Skill.create(name: "Enchanting",  slug: "enchanting")
+illusion    = Skill.create(name: "Illusion",    slug: "illusion")
+restoration = Skill.create(name: "Restoration", slug: "restoration")
+archery     = Skill.create(name: "Archery",     slug: "archery")
+block       = Skill.create(name: "Block",       slug: "block")
+heavy_armor = Skill.create(name: "Heavy Armor", slug: "heavy_armor")
+one_handed  = Skill.create(name: "One-handed",  slug: "one_handed")
+smithing    = Skill.create(name: "Smithing",    slug: "smithing")
+two_handed  = Skill.create(name: "Two-handed",  slug: "two_handed")
+alchemy     = Skill.create(name: "Alchemy",     slug: "alchemy")
+light_armor = Skill.create(name: "Light Armor", slug: "light_armor")
+lockpicking = Skill.create(name: "Lockpicking", slug: "lockpicking")
+pickpocket  = Skill.create(name: "Pickpocket",  slug: "pickpocket")
+sneak       = Skill.create(name: "Sneak",       slug: "sneak")
+speech      = Skill.create(name: "Speech",      slug: "speech")
 
 # Races
 Altmer = Race.create(
   name: "Altmer",
   major_skill: illusion,
-  minor_skills: [alteration, conjuration, destruction, enchanting, restoration]
+  minor_skills: [alteration, conjuration, destruction, enchanting, restoration],
+  slug: "altmer"
 )
 Argonian = Race.create(
   name: "Argonian",
   major_skill: lockpicking,
-  minor_skills: [alteration, light_armor, pickpocket, restoration, sneak]
+  minor_skills: [alteration, light_armor, pickpocket, restoration, sneak],
+  slug: "argonian"
 )
 Bosmer = Race.create(
   name: "Bosmer",
   major_skill: archery,
-  minor_skills: [alchemy, light_armor, lockpicking, pickpocket, sneak]
+  minor_skills: [alchemy, light_armor, lockpicking, pickpocket, sneak],
+  slug: "bosmer"
 )
 Breton = Race.create(
   name: "Breton",
   major_skill: conjuration,
-  minor_skills: [alchemy, alteration, illusion, restoration, speech]
+  minor_skills: [alchemy, alteration, illusion, restoration, speech],
+  slug: "breton"
 )
 Dunmer = Race.create(
   name: "Dunmer",
   major_skill: destruction,
-  minor_skills: [alchemy, alteration, illusion, light_armor, sneak]
+  minor_skills: [alchemy, alteration, illusion, light_armor, sneak],
+  slug: "dunmer"
 )
 Imperial = Race.create(
   name: "Imperial",
   major_skill: restoration,
-  minor_skills: [block, destruction, enchanting, heavy_armor, one_handed]
+  minor_skills: [block, destruction, enchanting, heavy_armor, one_handed],
+  slug: "imperial"
 )
 Khajiit = Race.create(
   name: "Khajiit",
   major_skill: sneak,
-  minor_skills: [alchemy, archery, lockpicking, pickpocket, one_handed]
+  minor_skills: [alchemy, archery, lockpicking, pickpocket, one_handed],
+  slug: "khajiit"
 )
 Nord = Race.create(
   name: "Nord",
   major_skill: two_handed,
-  minor_skills: [block, light_armor, one_handed, smithing, speech]
+  minor_skills: [block, light_armor, one_handed, smithing, speech],
+  slug: "nord"
 )
 Orc = Race.create(
   name: "Orc",
   major_skill: heavy_armor,
-  minor_skills: [block, enchanting, one_handed, smithing, two_handed]
+  minor_skills: [block, enchanting, one_handed, smithing, two_handed],
+  slug: "orc"
 )
 Redguard = Race.create(
   name: "Redguard",
   major_skill: one_handed,
-  minor_skills: [alteration, archery, block, destruction, smithing]
+  minor_skills: [alteration, archery, block, destruction, smithing],
+  slug: "redguard"
 )
 
-
-
+# Perks
 overdraw = Perk.create(
   name: "Overdraw",
   description: "Bows do 20% more damage.(+20% per additional rank)",

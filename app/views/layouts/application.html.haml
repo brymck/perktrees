@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 %html
   %head
-    %title Perk Trees
+    %title= title
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
     = yield
+    = render partial: "layouts/footer"

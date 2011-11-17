@@ -1,6 +1,21 @@
-%select#races
-  - @races.each do |race|
-    %option{:"data-skills" => "[#{race.skills_text}]"}= race.name
+%table.no-border
+  %tr
+    %td Race
+    %td
+      %select#races
+        - @races.each do |race|
+          %option{:"data-skills" => "[#{race.skills_text}]"}= race.name
+  %tr
+    %td Name
+    %td
+      %input#name{type: :text}
+  %tr
+    %td Level
+    %td
+      %input#level{type: :number, min: 1, max: 81, value: 1}
+  %tr
+    %td Experience
+    %td Not yet...
 %table
   %thead
     %tr

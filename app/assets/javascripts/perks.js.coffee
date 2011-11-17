@@ -154,9 +154,12 @@ get_hashes = ->
 
 # Load character from URL params
 load_url = ->
-  if hashes.params
+  if hashes.q
+    parts = hashes.q.split("|")
+    name = parts[0]
+    
     # Convert from base 36 to binary
-    text_36 = hashes.params
+    text_36 = parts[1]
     text = ""
     i = 0
     while i < text_36.length
@@ -182,12 +185,15 @@ load_url = ->
           value = parseInt(text.substr(index, SELECT_PLACES), 2)
           $option.val $option.find("option").eq(value).val()
           index += SELECT_PLACES
+        when "text"
+          $option.val name
       $option.trigger("change") if value isnt 0
 
 # Constantly build URLs as values change
 build_urls = ->
   # Necessary to prevent initial zeroes from being lost
   text = "1"
+  name = ""
 
   # Get binary values from selects and inputs
   $("select, input[id!=url]").each (i, option) ->
@@ -199,6 +205,8 @@ build_urls = ->
         text += left_pad(parseInt($option.val()).toString(2), NUMBER_PLACES)
       when "select"
         text += left_pad($option[0].selectedIndex.toString(2), SELECT_PLACES)
+      when "text"
+        name = $option.val()
 
   # Convert from binary to base 36
   text_36 = ""
@@ -209,7 +217,7 @@ build_urls = ->
     i += 15
 
   # Write to URL box
-  $url.val window.location.origin + "/?params=" + text_36
+  $url.val window.location.origin + "/?q=#{name}|#{text_36}"
 
 $ ->
   # Go through each skill row in the table

@@ -1,14 +1,13 @@
-%h1= @skill.name
 - unless @skill.races.empty?
   %ul
     - unless @skill.major_races.empty?
       %li
         %strong Major Races:
-        = render partial: "layouts/list_with_links", locals: { objects: @skill.major_races, method: :name }
+        = render partial: "layouts/list_with_links", locals: { objects: @skill.major_races }
     - unless @skill.minor_races.empty?
       %li
         %strong Minor Races:
-        = render partial: "layouts/list_with_links", locals: { objects: @skill.minor_races, method: :name }
+        = render partial: "layouts/list_with_links", locals: { objects: @skill.minor_races }
 %table
   %thead
     %tr
@@ -23,8 +22,8 @@
   %tbody
     - @skill.perks.each do |perk|
       %tr
-        %td= perk.name
+        %td= link_to perk.short_name, perk
         %td= perk.skill_points
-        %td= perk.prerequisites.map { perk.name }.join " or "
+        %td
+          = render partial: "layouts/list_with_links", locals: { objects: perk.prerequisites, method: :short_name, delimiter: "or" }
         %td= perk.description
-= link_to "Back", root_path

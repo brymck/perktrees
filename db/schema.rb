@@ -26,11 +26,13 @@ ActiveRecord::Schema.define(:version => 20111116031513) do
     t.integer  "ranks",        :default => 1
     t.integer  "skill_id"
     t.integer  "skill_points", :default => 0
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "perks", ["skill_id"], :name => "index_perks_on_skill_id"
+  add_index "perks", ["slug"], :name => "index_perks_on_slug"
 
   create_table "perks_prerequisites", :id => false, :force => true do |t|
     t.integer "perk_id"
@@ -41,8 +43,8 @@ ActiveRecord::Schema.define(:version => 20111116031513) do
 
   create_table "races", :force => true do |t|
     t.string   "name"
-    t.string   "slug"
     t.integer  "major_skill_id"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

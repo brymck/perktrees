@@ -1,5 +1,5 @@
 Perktrees::Application.routes.draw do
-  resources :races, only: [:index, :show]
+  resources :perks, :races, only: [:index, :show]
   resources :skills, only: :show
   root :to => 'skills#index'
 

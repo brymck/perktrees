@@ -11,6 +11,6 @@ module ApplicationHelper
   end
 
   def title
-    @title || "Perk Trees"
+    @title || "Skyrim Character Creation"
   end
 end

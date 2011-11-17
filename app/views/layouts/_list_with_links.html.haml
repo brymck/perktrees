@@ -1,3 +1,5 @@
-%ul.comma-separated
+- delimiter ||= "comma"
+- method ||= :name
+%ul{class: "#{delimiter}-separated"}
   - objects.each do |object|
-    %li= link_to(object[method], object)
+    %li= link_to object.send(method), object

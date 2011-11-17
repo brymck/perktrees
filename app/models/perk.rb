@@ -22,4 +22,8 @@ class Perk < ActiveRecord::Base
       ids.join ","
     end
   end
+
+  def to_param
+    slug
+  end
 end

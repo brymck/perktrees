@@ -1,17 +1,25 @@
-a
-  color: blue
-  text-decoration: none
-a:hover
-  text-decoration: underline
-ul.comma-separated
+/* Flat list template */
+@mixin flat-list($delimiter)
   display: inline-block
   list-style-type: none
   li
     display: inline-block
   li:after
-    content: ", "
+    content: $delimiter
   li:last-child:after
     content: ""
+
+a
+  color: blue
+  text-decoration: none
+a:hover
+  text-decoration: underline
+
+/* Flat lists */
+ul.comma-separated
+  @include flat-list(", ")
+ul.or-separated
+  @include flat-list(" or ")
 table
   border-bottom: solid 1px #666
   border-collapse: collapse

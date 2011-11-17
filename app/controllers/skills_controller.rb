@@ -3,6 +3,7 @@ class SkillsController < ApplicationController
   # GET /skills.json
   def index
     @skills = Skill.all
+    @title = "Skyrim Character Creation"
 
     respond_to do |format|
       format.html # index.html.erb

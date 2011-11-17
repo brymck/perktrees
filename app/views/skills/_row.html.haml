@@ -1,4 +1,4 @@
-%td= link_to skill.name, skill
+%td= link_to skill.name, skill, tabindex: -1
 %td
   %input{id: "points#{skill.id}", type: :number, min: 15, max: 100, value: 15}
 %td

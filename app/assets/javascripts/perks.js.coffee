@@ -1,3 +1,9 @@
+# Set variables locally accessible within this script
+MAJOR_MOD = 10
+MINOR_MOD = 5
+$races = null
+skills = []
+
 # Gets the type of node or, if it's an input, the type of input node
 get_type = ($option) ->
   node_name = $option[0].nodeName.toLowerCase()
@@ -17,7 +23,7 @@ enable_perk = ($perk, enabled) ->
       when "checkbox"
         $option.prop "checked", false
       when "select"
-        $option.val 0
+        $option.val ""
     $option.trigger "change"
 
 # Determines whether a perk is chosen based on the value of a particular input
@@ -27,7 +33,7 @@ is_chosen = ($option) ->
     when "checkbox"
       $option.prop "checked"
     when "select"
-      $option.val() isnt 0
+      $option.val() isnt ""
     else
       false
 
@@ -82,6 +88,50 @@ monitor_requirements = ($perk, $points) ->
   # Create monitor events for each element in the list
   $(full_list.join(", ")).mouseup(check).keyup(check).change(check)
 
+# Check all skills to make sure they're within 15 and 100
+check_skills = (skills) ->
+  for skill in skills
+    $points = $("#points#{skill}")
+
+    # Make sure all skills stay between 15 and 100
+    $points.val(15) if parseInt($points.val()) < 15
+    $points.val(100) if parseInt($points.val()) > 100
+
+    # Trigger any events associated with the skill
+    $points.trigger "change"
+
+# Modify skills by major/minor modification amount
+modify_skills = (skills, multiplier, check_limits = false) ->
+  # First skill is major
+  is_major = true
+  for skill in skills
+    $points = $("#points#{skill}")
+
+    # Set points equal to current value, plus major/minor mod amount multiplied
+    # by the multiplier
+    $points.val parseInt($points.val()) +
+      multiplier * (if is_major then MAJOR_MOD else MINOR_MOD)
+
+    # Following skills are minor
+    is_major = false
+
+# Adjust skill points
+adjust_skills = ->
+  # Change races, preserving the previous set of skills while we determine what
+  # to adjust
+  $races.data("skills")
+  $selected = $races.find("option:selected")
+  previous_skills = skills
+  skills = $selected.data("skills")
+
+  # Modify skills
+  modify_skills previous_skills, -1
+  modify_skills skills, 1, true
+
+  # Check whether skills are within 15 and 100
+  check_skills previous_skills
+  check_skills skills
+
 $ ->
   # Go through each skill row in the table
   $(".skill").each (i, skill) ->
@@ -89,3 +139,8 @@ $ ->
     $points = $skill.find("input[type=number]")
     $skill.find(".perks li").each (j, perk) ->
       monitor_requirements $(perk), $points
+
+  # Set event for adjusting skill points
+  $races = $("#races")
+  $races.change adjust_skills
+  $races.val("Nord").trigger("change")

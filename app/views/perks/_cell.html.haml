@@ -8,7 +8,8 @@ title: perk.description}
     %input{type: :checkbox, disabled: requires_points || requires_perks, id: "option#{perk.id}"}
   - else
     %select{disabled: requires_points || requires_perks, id: "option#{perk.id}"}
+      %option
       - perk.ranks.times do |t|
-        %option= t
+        %option= t + 1
   %label{for: "option#{perk.id}"}
     = perk.short_name

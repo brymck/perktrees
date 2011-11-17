@@ -6,6 +6,12 @@ class Race < ActiveRecord::Base
     [major_skill] + minor_skills
   end
 
+  def skills_text
+    skills.map do |skill|
+      skill.id
+    end.join(",")
+  end
+
   def to_param
     slug
   end

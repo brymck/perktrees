@@ -1,6 +1,6 @@
-%select
+%select#races
   - @races.each do |race|
-    %option= race.name
+    %option{:"data-skills" => "[#{race.skills_text}]"}= race.name
 %table
   %thead
     %tr

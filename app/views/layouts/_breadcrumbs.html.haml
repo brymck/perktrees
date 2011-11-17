@@ -1,2 +1,4 @@
 %section#breadcrumbs
-  = @breadcrumbs.map { |crumb| link_to(crumb[0], crumb[1]) }.join(" > ").html_safe
+  %ul.angle-delimited
+    - @breadcrumbs.each do |crumb|
+      %li= link_to crumb[0], crumb[1]

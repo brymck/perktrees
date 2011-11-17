@@ -161,17 +161,18 @@ load_url = ->
     i = 0
     while i < text_36.length
       converted = parseInt(text_36.substr(i, 3), 36).toString(2)
-      console.log "#{text_36.substr(i, 3)} -> #{converted}"
       text += left_pad(converted, 15)
       i += 3
     index = 1
+    value = null
 
     # Fill in selects and inputs
     $("select, input[id!=url]").each (i, option) ->
       $option = $(option)
       switch get_type($option)
         when "checkbox"
-          $option.prop "checked", (text.substr(index, 1) is "1")
+          value = parseInt(text.substr(index, 1), 2)
+          $option.prop "checked", (value is 1)
           index++
         when "number"
           value = parseInt(text.substr(index, NUMBER_PLACES), 2)
@@ -181,6 +182,7 @@ load_url = ->
           value = parseInt(text.substr(index, SELECT_PLACES), 2)
           $option.val $option.find("option").eq(value).val()
           index += SELECT_PLACES
+      $option.trigger("change") if value isnt 0
 
 # Constantly build URLs as values change
 build_urls = ->
@@ -203,7 +205,6 @@ build_urls = ->
   i = 0
   while i < text.length
     converted = parseInt(text.substr(i, 15), 2).toString(36)
-    console.log "#{text.substr(i, 15)} -> #{converted}"
     text_36 += left_pad(converted, 3)
     i += 15
 

@@ -2,9 +2,7 @@
 - requires_perks  = !perk.prerequisite_ids.empty?
 %li{id: "perk#{perk.id}",
 :"data-points"     => (requires_points ? perk.skill_points : nil),
-:"data-points_met" => (requires_points ? false : nil),
-:"data-perks"      => (requires_perks ? perk.prerequisite_ids_text : nil),
-:"data-perks_met"  => (requires_perks ? false : nil),
+:"data-perks"      => (requires_perks ? "[#{perk.prerequisite_ids_text}]" : nil),
 title: perk.description}
   - if perk.ranks == 1
     %input{type: :checkbox, disabled: requires_points || requires_perks, id: "option#{perk.id}"}

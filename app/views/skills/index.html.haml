@@ -6,7 +6,7 @@
     %tr.skill
       %td= skill.name
       %td
-        %input{type: :number, min: 15, max: 100, value: 15}
+        %input{id: "points#{skill.id}", type: :number, min: 15, max: 100, value: 15}
       %td
         %ul.perks
           - skill.perks.each do |perk|

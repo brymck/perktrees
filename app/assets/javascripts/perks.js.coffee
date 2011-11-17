@@ -1,65 +1,91 @@
-enable_perk = ($perk) ->
-  enabled = (($perk.data("points_met") is true) and
-    ($perk.data("perks_met") is true))
-  $perk.find("input[type=checkbox], select").prop("disabled", !enabled)
-  if enabled
-    $perk.addClass "disabled"
+# Gets the type of node or, if it's an input, the type of input node
+get_type = ($option) ->
+  node_name = $option[0].nodeName.toLowerCase()
+  if node_name is "input"
+    $option.attr("type").toLowerCase()
   else
-    $perk.removeClass "disabled"
+    node_name
 
-# Determines whether a perk is chosen based on whether the checkbox is checked
-# or the selection dropdown is greater than zero
-is_chosen = ($perk) ->
-  $checkbox = $perk.find("input[type=checkbox]")
-  if $checkbox.size() > 0
-    $checkbox.prop("checked")
-  else
-    $perk.find("select").val() > 0
+# Enable or disable perk
+enable_perk = ($perk, enabled) ->
+  $option = $perk.find("input, select")
+  $option.prop "disabled", !enabled
 
-monitor_requisite = ($requisite, $perk) ->
-  if is_chosen($requisite)
-    $perk.data("perks_met", true)
-  else
-    $perk.data("perks_met", false)
-  enable_perk $perk
+  # If disabled, uncheck or set value to zero
+  if not enabled
+    switch get_type($option)
+      when "checkbox"
+        $option.prop "checked", false
+      when "select"
+        $option.val 0
+    $option.trigger "change"
 
-monitor_perks = ($perk) ->
-  requisite_ids = $perk.data("perks")
-
-  # Turn into an array
-  if (typeof requisite_ids).toLowerCase() == "number"
-    requisite_ids = [requisite_ids]
-  else
-    requisite_ids = requisite_ids.split(", ")
-
-  console.log requisite_ids.length
-    
-  for requisite_id in requisite_ids
-    $requisite = $("#perk#{requisite_id}")
-    check = -> monitor_requisite($requisite, $perk)
-    $requisite.find("input[type=checkbox], select").mouseup(check).keyup(check).change(check)
-
-monitor_points = ($perk, $points) ->
-  # Get required points
-  required_points = $perk.data("points")
-
-  # Build formula for whether the point requirement is met
-  check = ->
-    if $points.val() >= required_points
-      $perk.data("points_met", true)
+# Determines whether a perk is chosen based on the value of a particular input
+is_chosen = ($option) ->
+  # Separate based on element type
+  switch get_type($option)
+    when "checkbox"
+      $option.prop "checked"
+    when "select"
+      $option.val() isnt 0
     else
-      $perk.data("points_met", false)
-    enable_perk $perk
+      false
 
-  # Assign check to all potentially relevant events
-  $points.mouseup(check).keyup(check).change(check)
+# Build monitor for perk
+monitor_check = ($points, required_points, $required_perks) ->
+  # False if point requirement exists and is not met
+  if (not required_points?) or ($points.val() < required_points)
+    return false
+
+  # Return true if no perk requirements to check
+  if $required_perks.length == 0
+    return true
+
+  # True if one perk is met 
+  for $option in $required_perks
+    if is_chosen($option)
+      return true
+
+  # Point requirements met but perk requirements not met
+  false
+
+# Conceptually, this is inferior; I should be assigning singular events to each
+# and having events "bubble" or "tree" up from there, but this is easier to
+# conceptualize. It has performance penalties, but the code should be more
+# maintainable. Besides, the target audience has PCs capable of playing Skyrim.
+# Shucks.
+monitor_requirements = ($perk, $points) ->
+  # Initialize container for holding all monitored inputs for enumeration.
+  # Container will later be joined into a comma-delimited string.
+  full_list = []
+  
+  # Get the point requirements
+  required_points = $perk.data("points")
+  full_list.push "##{$points.attr("id")}" if required_points?
+  
+  # Get the skill requirements
+  required_perk_ids = $perk.data("perks") || []
+  $required_perks = []
+
+  # Add all required perks to arrays for enumeration for perks specifically and
+  # for all inputs (inclusive of skill points)
+  for perk_id in required_perk_ids
+    option = "#option#{perk_id}"
+    $required_perks.push $(option)
+    full_list.push option
+
+  # Now that we know all point values and perk requirements to monitor, create
+  # a function to evaluate whether all requirements are met
+  check = ->
+    enable_perk $perk, monitor_check($points, required_points, $required_perks)
+
+  # Create monitor events for each element in the list
+  $(full_list.join(", ")).mouseup(check).keyup(check).change(check)
 
 $ ->
   # Go through each skill row in the table
   $(".skill").each (i, skill) ->
     $skill = $(skill)
     $points = $skill.find("input[type=number]")
-    $skill.find(".perks li[data-perks]").each (j, perk) ->
-      monitor_perks $(perk)
-    $skill.find(".perks li[data-points]").each (j, perk) ->
-      monitor_points $(perk), $points
+    $skill.find(".perks li").each (j, perk) ->
+      monitor_requirements $(perk), $points

@@ -13,17 +13,19 @@
     %tr
       %th
       %th.underline{colspan: 2} Requirements
-      %th
+      %th{colspan: 2}
     %tr
       %th Perk
       %th Skill Points
       %th Perks
+      %th Ranks
       %th Description
   %tbody
     - @skill.perks.each do |perk|
       %tr
         %td= link_to perk.short_name, perk
-        %td= perk.skill_points
+        %td= perk.skill_points != 0 ? perk.skill_points : nil
         %td
           = render partial: "layouts/list_with_links", locals: { objects: perk.prerequisites, method: :short_name, delimiter: "or" }
+        %td= perk.ranks != 1 ? perk.ranks : nil
         %td= perk.description

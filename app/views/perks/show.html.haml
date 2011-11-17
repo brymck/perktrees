@@ -1,0 +1,19 @@
+%ul
+  %li
+    %strong Skill:
+    = link_to @perk.skill.name, @perk.skill
+  - if @perk.skill_points != 0
+    %li
+      %strong Skill Points Required:
+      = @perk.skill_points
+  - unless @perk.prerequisites.empty?
+    %li
+      %strong Perks Required:
+      = render partial: "layouts/list_with_links", locals: { objects: @perk.prerequisites, method: :short_name, delimiter: "or" }
+  - if @perk.ranks != 1
+    %li
+      %strong Multiple Ranks:
+      = @perk.ranks
+  %li
+    %strong Description:
+    = @perk.description

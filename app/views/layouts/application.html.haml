@@ -8,7 +8,7 @@
   %body
     - unless @title.nil?
       %h1= @title
-    = yield
-    - unless current_page?(root_path)
-      = link_to "Back to main", root_path
+    = render partial: "layouts/breadcrumbs"
+    %section
+      = yield
     = render partial: "layouts/footer"

@@ -1,0 +1,2 @@
+%section#breadcrumbs
+  = @breadcrumbs.map { |crumb| link_to(crumb[0], crumb[1]) }.join(" > ").html_safe

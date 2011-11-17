@@ -1,0 +1,7 @@
+%ul
+  %li
+    %strong Major Skill:
+    = link_to @race.major_skill.name, @race.major_skill
+  %li
+    %strong Minor Skills:
+    = render partial: "layouts/list_with_links", locals: { objects: @race.minor_skills }

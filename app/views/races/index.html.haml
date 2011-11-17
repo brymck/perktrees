@@ -1,0 +1,16 @@
+%table
+  %thead
+    %tr
+      %th
+      %th.underline{colspan: 6} Skills
+    %tr
+      %th Name
+      %th Major
+      %th{colspan: 5} Minor
+  %tbody
+    - @races.each do |race|
+      %tr
+        %td= link_to race.name, race
+        %td= link_to race.major_skill.name, race.major_skill
+        - race.minor_skills.each do |skill|
+          %td= link_to skill.name, skill

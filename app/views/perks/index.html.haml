@@ -1,0 +1,22 @@
+%table
+  %thead
+    %tr
+      %th Skill
+      %th Perk
+      %th Skill Points
+      %th Perks
+      %th Ranks
+      %th Description
+  %tbody
+    - @skills.each_with_index do |skill, skill_index|
+      - skill.perks.each_with_index do |perk, perk_index|
+        %tr{class: perk_index == 0 && skill_index != 0 ? "overline" : nil}
+          - if perk_index == 0
+            %td{rowspan: skill.perks.count}= link_to skill.name, skill
+          %td= link_to perk.short_name, perk
+          %td= perk.skill_points != 0 ? perk.skill_points : nil
+          %td
+            = render partial: "layouts/list_with_links", locals: { objects: perk.prerequisites, method: :short_name, delimiter: "or" }
+          %td= perk.ranks != 1 ? perk.ranks : nil
+          %td= perk.description
+          - is_first_skill = false

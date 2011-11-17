@@ -1,3 +1,6 @@
+%select
+  - @races.each do |race|
+    %option= race.name
 %table
   %thead
     %tr

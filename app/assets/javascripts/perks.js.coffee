@@ -37,17 +37,29 @@ get_type = ($option) ->
 
 # Enable or disable perk
 enable_perk = ($perk, enabled) ->
+  disabled = (enabled is false)
   $option = $perk.find("input, select")
-  $option.prop "disabled", !enabled
+  $option.prop "disabled", disabled
 
   # If disabled, uncheck or set value to zero
-  if not enabled
+  if enabled isnt true
     switch get_type($option)
       when "checkbox"
         $option.prop "checked", false
+        $option.trigger "change"
       when "select"
-        $option.val ""
-    $option.trigger "change"
+        if disabled
+          $option.val ""
+        else
+          index = $option[0].selectedIndex
+          $option.find("option").each (i, rank) ->
+            $(rank).prop "disabled", (i > enabled)
+            # To change the selection, the current index must exceed the
+            # allowed level, be equal to the index we're testing, and that must
+            # be greater than 0
+            if i > enabled and i is index and index > 0
+              $option[0].selectedIndex--
+              $option.trigger "change"
 
 # Determines whether a perk is chosen based on the value of a particular input
 is_chosen = ($option) ->
@@ -60,20 +72,29 @@ is_chosen = ($option) ->
     else
       false
 
+# Calculate the allowable ranks for a given skill level
+allowable_ranks = (points, required, addl) ->
+  if addl?
+    Math.floor (points - (required || 0)) / addl + 1
+  else
+    true
+
 # Build monitor for perk
-monitor_check = ($points, required_points, $required_perks) ->
+monitor_check = ($points, required_points, additional_rank, $required_perks) ->
+  points = $points.val()
+
   # False if point requirement exists and is not met
-  if (not required_points?) or ($points.val() < required_points)
+  if (required_points?) and (points < required_points)
     return false
 
   # Return true if no perk requirements to check
-  if $required_perks.length == 0
-    return true
+  if $required_perks.length is 0
+    return allowable_ranks(points, required_points, additional_rank)
 
   # True if one perk is met 
   for $option in $required_perks
     if is_chosen($option)
-      return true
+      return allowable_ranks(points, required_points, additional_rank)
 
   # Point requirements met but perk requirements not met
   false
@@ -90,7 +111,8 @@ monitor_requirements = ($perk, $points) ->
   
   # Get the point requirements
   required_points = $perk.data("points")
-  full_list.push "##{$points.attr("id")}" if required_points?
+  additional_rank = $perk.data("addl")
+  full_list.push "##{$points.attr("id")}"
   
   # Get the skill requirements
   required_perk_ids = $perk.data("perks") || []
@@ -106,7 +128,7 @@ monitor_requirements = ($perk, $points) ->
   # Now that we know all point values and perk requirements to monitor, create
   # a function to evaluate whether all requirements are met
   check = ->
-    enable_perk $perk, monitor_check($points, required_points, $required_perks)
+    enable_perk $perk, monitor_check($points, required_points, additional_rank, $required_perks)
 
   # Create monitor events for each element in the list
   $(full_list.join(", ")).mouseup(check).keyup(check).change(check)
@@ -161,6 +183,7 @@ left_pad = (str, length) ->
     str = "0#{str}"
   str
 
+# Build hashes
 get_hashes = ->
   hashes = {}
   segments = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')

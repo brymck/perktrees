@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111116031513) do
+ActiveRecord::Schema.define(:version => 20111130072857) do
 
   create_table "minor_skills_races", :id => false, :force => true do |t|
     t.integer "skill_id"
@@ -23,12 +23,13 @@ ActiveRecord::Schema.define(:version => 20111116031513) do
   create_table "perks", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "ranks",        :default => 1
+    t.integer  "ranks",           :default => 1
     t.integer  "skill_id"
-    t.integer  "skill_points", :default => 0
+    t.integer  "skill_points",    :default => 0
     t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "additional_rank"
   end
 
   add_index "perks", ["skill_id"], :name => "index_perks_on_skill_id"

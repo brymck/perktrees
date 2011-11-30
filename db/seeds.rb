@@ -86,6 +86,7 @@ overdraw = Perk.create(
   description: "Bows do 20% more damage.(+20% per additional rank)",
   skill: archery,
   ranks: 5,
+  additional_rank: 20,
   slug: "overdraw",
 )
 eagle_eye = Perk.create(
@@ -102,6 +103,7 @@ critical_shot = Perk.create(
   skill: archery,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 30, 
   prerequisites: [overdraw],
   slug: "critical_shot"
 )
@@ -111,6 +113,7 @@ steady_hand = Perk.create(
   skill: archery,
   skill_points: 40,
   ranks: 2,
+  additional_rank: 20,
   prerequisites: [eagle_eye],
   slug: "steady_hand"
 )
@@ -159,6 +162,7 @@ shield_wall = Perk.create(
   description: "Blocking is 20% more effective (+5% per additional rank)",
   skill: block,
   ranks: 5,
+  additional_rank: 20,
   slug: "shield_wall"
 )
 deflect_arrows = Perk.create(
@@ -230,6 +234,7 @@ juggernaut = Perk.create(
   description: "Increases armor rating for Heavy Armor by 20% (+20% per additional rank)",
   skill: heavy_armor,
   ranks: 5,
+  additional_rank: 20,
   slug: "juggernaut"
 )
 fists_of_steel = Perk.create(
@@ -293,6 +298,7 @@ armsman = Perk.create(
   description: "One-Handed weapons do 20% more damage (+20% per additional rank)",
   skill: one_handed,
   ranks: 5,
+  additional_rank: 20,
   slug: "armsman"
 )
 fighting_stance = Perk.create(
@@ -309,6 +315,7 @@ hack_and_slash = Perk.create(
   skill: one_handed,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 30,
   prerequisites: [armsman],
   slug: "hack_and_slash"
 )
@@ -318,6 +325,7 @@ bone_breaker = Perk.create(
   skill: one_handed,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 30,
   prerequisites: [armsman],
   slug: "bone_breaker"
 )
@@ -327,6 +335,7 @@ bladesman = Perk.create(
   skill: one_handed,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 30,
   prerequisites: [armsman],
   slug: "bladesman"
 )
@@ -336,6 +345,7 @@ dual_flurry = Perk.create(
   skill: one_handed,
   skill_points: 30,
   ranks: 2,
+  additional_rank: 20,
   prerequisites: [armsman],
   slug: "dual_flurry"
 )
@@ -376,6 +386,7 @@ barbarian = Perk.create(
   description: "Two-Handed weapons do 20% more damage (+20% per additional rank)",
   skill: two_handed,
   ranks: 5,
+  additional_rank: 20,
   slug: "barbarian"
 )
 champions_stance = Perk.create(
@@ -392,6 +403,7 @@ limbsplitter = Perk.create(
   skill: two_handed,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 30,
   prerequisites: [barbarian],
   slug: "limbsplitter"
 )
@@ -401,6 +413,7 @@ deep_wounds = Perk.create(
   skill: two_handed,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 30,
   prerequisites: [barbarian],
   slug: "deep_wounds"
 )
@@ -410,6 +423,7 @@ skullcrusher = Perk.create(
   skill: two_handed,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 30,
   prerequisites: [barbarian],
   slug: "skullcrusher"
 )
@@ -551,6 +565,7 @@ mage_armor = Perk.create(
   skill: alteration,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 20,
   prerequisites: [apprentice_alteration],
   slug: "mage_armor"
 )
@@ -560,6 +575,7 @@ magic_resistance = Perk.create(
   skill: alteration,
   skill_points: 30,
   ranks: 3,
+  additional_rank: 20,
   prerequisites: [apprentice_alteration],
   slug: "magic_resistance"
 )
@@ -639,6 +655,7 @@ summoner = Perk.create(
   skill: conjuration,
   skill_points: 30,
   ranks: 2,
+  additional_rank: 40,
   prerequisites: [novice_conjuration],
   slug: "summoner"
 )
@@ -750,6 +767,7 @@ augmented_flames = Perk.create(
   skill: destruction,
   skill_points: 30,
   ranks: 2,
+  additional_rank: 30,
   prerequisites: [novice_destruction],
   slug: "augmented_flames"
 )
@@ -759,6 +777,7 @@ augmented_frost = Perk.create(
   skill: destruction,
   skill_points: 30,
   ranks: 2,
+  additional_rank: 30,
   prerequisites: [novice_destruction],
   slug: "augmented_frost"
 )
@@ -768,6 +787,7 @@ augmented_shock = Perk.create(
   skill: destruction,
   skill_points: 30,
   ranks: 2,
+  additional_rank: 30,
   prerequisites: [novice_destruction],
   slug: "augmented_shock"
 )
@@ -973,6 +993,7 @@ recovery = Perk.create(
   skill: restoration,
   skill_points: 30,
   ranks: 2,
+  additional_rank: 30,
   prerequisites: [novice_restoration],
   slug: "recovery"
 )
@@ -1037,6 +1058,7 @@ enchanter = Perk.create(
   description: "New enchantments are 20% stronger (+20% per additional rank)",
   skill: enchanting,
   ranks: 5,
+  additional_rank: 20,
   slug: "enchanter"
 )
 soul_squeezer = Perk.create(
@@ -1108,6 +1130,7 @@ alchemist = Perk.create(
   description: "Potions and poisons are 20% stronger (+20% per additional rank)",
   skill: alchemy,
   ranks: 5,
+  additional_rank: 20,
   slug: "alchemist"
 )
 physician = Perk.create(
@@ -1140,6 +1163,7 @@ experimenter = Perk.create(
   skill: alchemy,
   skill_points: 50,
   ranks: 3,
+  additional_rank: 20,
   prerequisites: [benefactor],
   slug: "experimenter"
 )
@@ -1180,6 +1204,7 @@ agile_defender = Perk.create(
   description: "Increase armor rating for Light Armor by 20% (+20% per additional rank)",
   skill: light_armor,
   ranks: 5,
+  additional_rank: 20,
   slug: "agile_defender"
 )
 custom_fit = Perk.create(
@@ -1313,6 +1338,7 @@ light_fingers = Perk.create(
   description: "Pickpocketing bonus of 20%. Item weight and value reduce pickpocketing odds (+5% per additional rank)",
   skill: pickpocket,
   ranks: 5,
+  additional_rank: 20,
   slug: "light_fingers"
 )
 night_thief = Perk.create(
@@ -1376,6 +1402,7 @@ stealth = Perk.create(
   description: "You are 20% harder to detect when sneaking (+5% per additional rank)",
   skill: sneak,
   ranks: 5,
+  additional_rank: 20,
   slug: "stealth"
 )
 muffled_movement = Perk.create(
@@ -1447,6 +1474,7 @@ haggling = Perk.create(
   description: "Buying and selling prices are 10% better (+5% per additional rank)",
   skill: speech,
   ranks: 5,
+  additional_rank: 20,
   slug: "haggling"
 )
 allure = Perk.create(

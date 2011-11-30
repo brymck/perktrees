@@ -8,6 +8,7 @@
   %body
     - unless @title.nil?
       %h1= @title
+    = render partial: "layouts/pages"
     = render partial: "layouts/breadcrumbs"
     %section
       = yield

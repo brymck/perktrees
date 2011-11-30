@@ -10,6 +10,18 @@
     %td
       %input#name{type: :text}
   %tr
+    %td Health
+    %td
+      %input#health.stat{type: :number, min: 100, max: 900, step: 10, value: 100}
+  %tr
+    %td Magicka
+    %td
+      %input#magicka.stat{type: :number, min: 100, max: 900, step: 10, value: 100}
+  %tr
+    %td Stamina
+    %td
+      %input#stamina.stat{type: :number, min: 100, max: 900, step: 10, value: 100}
+  %tr
     %td Level
     %td#level
   %tr

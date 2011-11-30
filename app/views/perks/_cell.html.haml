@@ -11,6 +11,6 @@ title: perk.description}
     %select{disabled: requires_points || requires_perks, id: "option#{perk.id}"}
       %option
       - perk.ranks.times do |t|
-        %option= t + 1
+        %option{disabled: t != 0}= t + 1
   %label{for: "option#{perk.id}"}
     = perk.short_name

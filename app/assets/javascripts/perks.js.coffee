@@ -218,7 +218,8 @@ load_url = ->
           index++
         when "number"
           value = parseInt(text.substr(index, NUMBER_PLACES), 2)
-          $option.val value
+          multiplier = if $option.hasClass("stat") then 10 else 1
+          $option.val value * multiplier
           index += NUMBER_PLACES
         when "select"
           value = parseInt(text.substr(index, SELECT_PLACES), 2)
@@ -226,7 +227,10 @@ load_url = ->
           index += SELECT_PLACES
         when "text"
           $option.val name
-      $option.trigger("change") if value isnt 0
+
+      # For some reason, running this right after updating the name isn't
+      # working. Should look into it later (the i isnt 0 part)
+      $option.trigger("change") if value isnt 0 and i isnt 0
 
 # Constantly build URLs as values change
 build_urls = ->
@@ -241,7 +245,8 @@ build_urls = ->
       when "checkbox"
         text += (if $option.prop("checked") then 1 else 0)
       when "number"
-        text += left_pad(parseInt($option.val()).toString(2), NUMBER_PLACES)
+        divisor = if $option.hasClass("stat") then 10 else 1
+        text += left_pad(parseInt($option.val() / divisor).toString(2), NUMBER_PLACES)
       when "select"
         text += left_pad($option[0].selectedIndex.toString(2), SELECT_PLACES)
       when "text"
@@ -271,9 +276,10 @@ show_progress = ->
   # Calculate total XP
   exp = 0
   $points.each (i, point) -> exp += xp_from_skill($(point).val())
+  exp -= BASE_XP
 
   # Give XP to experience text, excluding base XP
-  $experience.text number_with_commas(exp - BASE_XP)
+  $experience.text number_with_commas(exp)
 
   # Calculate level
   $level.text calculate_level(exp)

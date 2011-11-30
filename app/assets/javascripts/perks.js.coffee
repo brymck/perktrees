@@ -6,10 +6,26 @@ MINOR_MOD = 5
 NUMBER_PLACES = 7
 SELECT_PLACES = 5
 
+BASE_XP = 2815
+THOUSANDS_REGEX = ///
+                  \B            # not word boundary
+                  (?=           # look-ahead
+                    (?:\d{3})+  # match of series of three digits in a row
+                    (?!\d)      # negative-lookahead for a digit
+                  )
+                  ///g          # match multiple times per number
+
 $races = null
 $url = null
+$points = null
+$level = null
+$experience = null
 skills = []
 hashes = {}
+
+# Add thousands places
+number_with_commas = (x) ->
+  x.toString().replace(THOUSANDS_REGEX, ",")
 
 # Gets the type of node or, if it's an input, the type of input node
 get_type = ($option) ->
@@ -219,6 +235,26 @@ build_urls = ->
   # Write to URL box
   $url.val window.location.origin + "/?q=#{name}|#{text_36}"
 
+# Calculates experience gained thus far for a skill (inclusive of base XP)
+xp_from_skill = (points) ->
+  points = parseInt(points)
+  points * (points + 1) / 2
+
+# Calculates level from total XP
+calculate_level = (exp) ->
+  Math.floor((Math.sqrt(8 * exp + 1225) / 5 - 5) / 2)
+
+show_progress = ->
+  # Calculate total XP
+  exp = 0
+  $points.each (i, point) -> exp += xp_from_skill($(point).val())
+
+  # Give XP to experience text, excluding base XP
+  $experience.text number_with_commas(exp - BASE_XP)
+
+  # Calculate level
+  $level.text calculate_level(exp)
+
 $ ->
   # Go through each skill row in the table
   $(".skill").each (i, skill) ->
@@ -233,6 +269,12 @@ $ ->
     $races.change adjust_skills
     $races.val("Nord").trigger("change")
 
+  # Set points to auto-update level
+  $points = $(".skill input[type=number]")
+  $level = $("#level")
+  $experience = $("#experience")
+  $points.mouseup(show_progress).keyup(show_progress).change(show_progress)
+
   # Calculate hashes from URL
   get_hashes()
 
@@ -245,3 +287,5 @@ $ ->
 
     # Load information from current URL if it exists
     load_url()
+
+  show_progress()

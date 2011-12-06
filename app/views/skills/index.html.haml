@@ -9,24 +9,15 @@
     %td Name
     %td
       %input#name{type: :text}
-  %tr
-    %td Health
-    %td
-      %input#health.stat{type: :number, min: 100, max: 900, step: 10, value: 100}
-  %tr
-    %td Magicka
-    %td
-      %input#magicka.stat{type: :number, min: 100, max: 900, step: 10, value: 100}
-  %tr
-    %td Stamina
-    %td
-      %input#stamina.stat{type: :number, min: 100, max: 900, step: 10, value: 100}
-  %tr
-    %td Level
-    %td#level
-  %tr
-    %td Experience
-    %td#experience
+  - %w(health magicka stamina).each do |stat|
+    %tr
+      %td= stat.humanize
+      %td
+        %input.stat{id: stat, type: :number, min: 100, max: 900, step: 10, value: 100}
+  - %w(level perks stat_increases experience).each do |result|
+    %tr
+      %td= result.humanize
+      %td{id: result}
 %table
   %thead
     %tr

@@ -15,13 +15,34 @@ THOUSANDS_REGEX = ///
                   )
                   ///g          # match multiple times per number
 
-$races = null
-$url = null
-$points = null
-$level = null
-$experience = null
+$races          = null
+$url            = null
+$points         = null
+$level          = null
+$experience     = null
+$perks          = null
+$stat_increases = null
 skills = []
 hashes = {}
+
+# Calculate how many stat and perk increases have been used and are available
+calculate_increases = ->
+  not_blank = ->
+    $(this).text() isnt ""
+
+  # Get the current level, minus one
+  level_minus_one = parseInt($level.text()) - 1
+
+  # Calculate the number of stat increases remaining
+  stat_total = 0
+  $(".stat").each (i, stat) ->
+    stat_total += parseInt($(stat).val())
+  $stat_increases.text "#{(stat_total - 300) / 10}/#{level_minus_one}"
+
+  # Calculate the number of perk choices remaining
+  perks_chosen  = $("input:checkbox:checked").size()
+  perks_chosen += $(".skill option:selected").filter(not_blank).size()
+  $perks.text "#{perks_chosen}/#{level_minus_one}"
 
 # Add thousands places
 number_with_commas = (x) ->
@@ -234,6 +255,8 @@ load_url = ->
 
 # Constantly build URLs as values change
 build_urls = ->
+  calculate_increases()
+
   # Necessary to prevent initial zeroes from being lost
   text = "1"
   name = ""
@@ -282,9 +305,17 @@ show_progress = ->
   $experience.text number_with_commas(exp)
 
   # Calculate level
-  $level.text calculate_level(exp)
+  level = calculate_level(exp)
+
+  # Update things if level has changed
+  unless level is $level.text()
+    $level.text calculate_level(exp)
+    calculate_increases()
 
 $ ->
+  $stat_increases = $("#stat_increases")
+  $perks = $("#perks")
+
   # Go through each skill row in the table
   $(".skill").each (i, skill) ->
     $skill = $(skill)
@@ -318,3 +349,5 @@ $ ->
     load_url()
 
   show_progress()
+
+  calculate_increases()

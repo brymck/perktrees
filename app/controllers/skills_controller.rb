@@ -1,4 +1,6 @@
 class SkillsController < ApplicationController
+  caches_page except: []
+
   def index
     @skills = Skill.all
     @races = Race.all

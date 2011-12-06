@@ -1,5 +1,6 @@
 class PerksController < ApplicationController
   before_filter :add_breadcrumbs
+  caches_page except: []
 
   def index
     @skills = Skill.all

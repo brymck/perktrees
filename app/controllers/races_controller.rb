@@ -1,5 +1,6 @@
 class RacesController < ApplicationController
   before_filter :add_breadcrumbs
+  caches_page except: []
 
   def index
     @races = Race.all
